@@ -18,8 +18,8 @@ const QuestionCard = ({ onAccept }) => {
   const handleNoClick = (e) => {
     if (e) e.preventDefault();
     setIsProcessing(true);
+    setShowReminder(false);
 
-    // Wrap the tracking in a try-catch so the UI never freezes
     try {
       trackLoveEvent("no_button_pressed", {
         attempt_count: noCount + 1,
