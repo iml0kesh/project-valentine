@@ -22,6 +22,15 @@ export default function App() {
   const handleAccept = () => {
     setPhase(2);
 
+    try {
+      trackLoveEvent("valentine_accepted", {
+        status: "success",
+        time: new Date().toLocaleTimeString(),
+      });
+    } catch (err) {
+      console.warn("Firebase Yes log failed:", err);
+    }
+
     const duration = 5 * 1000;
     const animationEnd = Date.now() + duration;
     const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
