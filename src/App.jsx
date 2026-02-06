@@ -1,17 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 import InitialPage from "./components/InitialPage";
 import QuestionCard from "./components/QuestionCard";
 import SuccessPage from "./components/SuccessPage";
 import Background from "./components/Background";
+import { trackLoveEvent } from "./firebase";
 
 export default function App() {
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      document.title = document.hidden ? "Come back! ❤️" : "For my Valentine";
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () =>
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, []);
+
   const [phase, setPhase] = useState(0);
 
   const handleAccept = () => {
     setPhase(2);
-    // Trigger Confetti!
+
     const duration = 5 * 1000;
     const animationEnd = Date.now() + duration;
     const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };

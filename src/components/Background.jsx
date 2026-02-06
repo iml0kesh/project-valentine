@@ -1,12 +1,10 @@
 import { motion } from "framer-motion";
 
 const Background = () => {
-  // Increased count for better density on larger mobile screens
   const symbols = Array.from({ length: 20 });
 
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden bg-[#fff1f2] touch-none">
-      {/* 1. LAYER: VIBRANT GRADIENT MESH */}
       <motion.div
         animate={{
           scale: [1, 1.1, 1],
@@ -24,10 +22,9 @@ const Background = () => {
         className="absolute bottom-[-20%] right-[-10%] w-[70%] h-[70%] bg-rose-300/40 blur-[130px] rounded-full"
       />
 
-      {/* 2. LAYER: LARGE DYNAMIC FLOATING SYMBOLS */}
       {symbols.map((_, i) => {
-        const size = Math.random() * 40 + 20; // Much larger range: 20px to 60px
-        const duration = Math.random() * 6 + 4; // Faster speeds: 4s to 10s
+        const size = Math.random() * 40 + 20;
+        const duration = Math.random() * 6 + 4; 
 
         return (
           <motion.div

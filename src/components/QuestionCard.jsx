@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { trackLoveEvent } from "../firebase";
 
 const QuestionCard = ({ onAccept }) => {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -17,7 +18,15 @@ const QuestionCard = ({ onAccept }) => {
   const handleNoClick = (e) => {
     if (e) e.preventDefault();
     setIsProcessing(true);
-    setShowReminder(false);
+
+    // Wrap the tracking in a try-catch so the UI never freezes
+    try {
+      trackLoveEvent("no_button_pressed", {
+        attempt_count: noCount + 1,
+      });
+    } catch (err) {
+      console.warn("Firebase tracking blocked or failed:", err);
+    }
 
     setTimeout(() => {
       setIsProcessing(false);
@@ -26,7 +35,7 @@ const QuestionCard = ({ onAccept }) => {
     }, 1800);
   };
 
-  const emotionalEmojis = ["💖", "🤨", "🥺", "😭", "💔", "😠", "👻"];
+  const emotionalEmojis = ["💖", "🤨", "🥺", "😭", "💔", "😁", "👻"];
   const currentEmoji =
     emotionalEmojis[Math.min(noCount, emotionalEmojis.length - 1)];
 
