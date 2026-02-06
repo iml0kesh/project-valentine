@@ -1,32 +1,53 @@
 import React, { useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import Background from "./components/Background";
+import confetti from "canvas-confetti";
 import InitialPage from "./components/InitialPage";
 import QuestionCard from "./components/QuestionCard";
+import SuccessPage from "./components/SuccessPage";
+import Background from "./components/Background";
 
 export default function App() {
   const [phase, setPhase] = useState(0);
 
+  const handleAccept = () => {
+    setPhase(2);
+    // Trigger Confetti!
+    const duration = 5 * 1000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+    const randomInRange = (min, max) => Math.random() * (max - min) + min;
+
+    const interval = setInterval(function () {
+      const timeLeft = animationEnd - Date.now();
+      if (timeLeft <= 0) return clearInterval(interval);
+
+      const particleCount = 50 * (timeLeft / duration);
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+      });
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+      });
+    }, 250);
+  };
+
   return (
     <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden">
       <Background />
+
       <AnimatePresence mode="wait">
         {phase === 0 && (
           <InitialPage key="initial" onOpen={() => setPhase(1)} />
         )}
 
-        {phase === 1 && (
-          <QuestionCard key="question" onAccept={() => setPhase(2)} />
-        )}
+        {phase === 1 && <QuestionCard key="question" onAccept={handleAccept} />}
 
-        {phase === 2 && (
-          <div key="success" className="text-center">
-            <h1 className="text-6xl">💖</h1>
-            <h2 className="text-4xl font-bold text-pink-600 mt-4">
-              Yay! See you on Feb 14!
-            </h2>
-          </div>
-        )}
+        {phase === 2 && <SuccessPage key="success" />}
       </AnimatePresence>
     </div>
   );
