@@ -5,7 +5,6 @@ import InitialPage from "./components/InitialPage";
 import QuestionCard from "./components/QuestionCard";
 import SuccessPage from "./components/SuccessPage";
 import Background from "./components/Background";
-import { trackLoveEvent } from "./firebase";
 
 export default function App() {
   useEffect(() => {
@@ -21,15 +20,6 @@ export default function App() {
 
   const handleAccept = () => {
     setPhase(2);
-
-    try {
-      trackLoveEvent("valentine_accepted", {
-        status: "success",
-        time: new Date().toLocaleTimeString(),
-      });
-    } catch (err) {
-      console.warn("Firebase Yes log failed:", err);
-    }
 
     const duration = 5 * 1000;
     const animationEnd = Date.now() + duration;

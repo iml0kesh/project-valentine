@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { trackLoveEvent } from "../firebase";
 
 const QuestionCard = ({ onAccept }) => {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -20,14 +19,6 @@ const QuestionCard = ({ onAccept }) => {
     if (e) e.preventDefault();
     setIsProcessing(true);
     setShowReminder(false);
-
-    try {
-      trackLoveEvent("no_button_pressed", {
-        attempt_count: noCount + 1,
-      });
-    } catch (err) {
-      console.warn("Firebase tracking blocked or failed:", err);
-    }
 
     setTimeout(() => {
       setIsProcessing(false);
