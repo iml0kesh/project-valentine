@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 const InitialPage = ({ onOpen }) => {
   return (
-    <div className="relative flex flex-col items-center justify-center p-6 text-center">
+    <div className="relative flex flex-col items-center justify-center p-6 text-center min-h-[80vh]">
       {/* 1. LAYER: AMBIENT TEXT BACKGROUND */}
       <div className="absolute inset-0 flex flex-col justify-around opacity-[0.03] pointer-events-none select-none">
         {[...Array(6)].map((_, i) => (
@@ -23,54 +23,58 @@ const InitialPage = ({ onOpen }) => {
         className="relative z-10"
       >
         <motion.div
-          whileHover={{ scale: 1.05, rotate: 2 }}
+          whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.9 }}
           onClick={onOpen}
-          className="cursor-pointer relative group"
+          className="cursor-pointer relative group flex flex-col items-center"
         >
+          {/* Pulsating Glow behind the envelope */}
+          <motion.div
+            animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
+            transition={{ repeat: Infinity, duration: 2 }}
+            className="absolute inset-0 bg-rose-200 blur-3xl rounded-full -z-10"
+          />
 
           <motion.div
-            animate={{ y: [0, -20, 0] }}
+            animate={{ y: [0, -15, 0] }}
             transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-            className="text-[140px] md:text-[180px] leading-none drop-shadow-[0_20px_50px_rgba(244,63,94,0.3)] transition-all duration-500 group-hover:drop-shadow-[0_20px_60px_rgba(244,63,94,0.5)]"
+            className="text-[140px] md:text-[180px] leading-none drop-shadow-2xl"
           >
             💌
           </motion.div>
-
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-            className="absolute inset-0 border-2 border-dashed border-rose-300/30 rounded-full scale-150 group-hover:border-rose-400/50 transition-colors"
-          />
         </motion.div>
       </motion.div>
 
-      <div className="mt-16 relative z-10">
+      {/* 3. LAYER: CALL TO ACTION */}
+      <div className="mt-12 relative z-10 flex flex-col items-center">
         <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="text-3xl md:text-4xl font-black text-gray-800 tracking-tighter leading-tight"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-3xl md:text-4xl font-black text-gray-800 tracking-tighter mb-8"
         >
           Hey! You have <br />
           <span className="text-rose-500">a secret message</span>
         </motion.h1>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="mt-6 flex flex-col items-center gap-2"
+        {/* NEW: A REAL BUTTON so users know exactly where to click */}
+        <motion.button
+          onClick={onOpen}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="bg-rose-500 text-white px-8 py-4 rounded-full font-bold text-lg shadow-[0_10px_20px_rgba(244,63,94,0.3)] flex items-center gap-2 group transition-all"
         >
-          <p className="text-rose-400/80 font-black uppercase text-[10px] tracking-[0.4em]">
-            Click the heart to unlock
-          </p>
-          <motion.div
-            animate={{ y: [0, 5, 0] }}
+          <span>Open Invitation</span>
+          <motion.span
+            animate={{ x: [0, 5, 0] }}
             transition={{ repeat: Infinity, duration: 1.5 }}
-            className="w-px h-12 bg-gradient-to-b from-rose-400 to-transparent"
-          />
-        </motion.div>
+          >
+            →
+          </motion.span>
+        </motion.button>
+
+        <p className="mt-4 text-rose-400/60 font-bold uppercase text-[10px] tracking-[0.4em]">
+          Tap the heart or the button
+        </p>
       </div>
 
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-rose-200/20 blur-[100px] -z-10 rounded-full" />

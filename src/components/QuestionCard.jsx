@@ -10,9 +10,10 @@ const QuestionCard = ({ onAccept }) => {
   const errorMessages = [
     "Invalid choice detected",
     "System prefers 'Yes'",
-    "Cupid says: try again",
+    "Seriously? Still clicking this?",
     "Permission denied",
-    "Choice out of bounds",
+    "JUST. CLICK. YES.",
+    "LAST WARNING. CLICK YES.",
   ];
 
   const handleNoClick = (e) => {
@@ -55,13 +56,17 @@ const QuestionCard = ({ onAccept }) => {
 
       {/* 2. LAYER: THE MAIN CARD */}
       <motion.div
+        key={noCount}
         animate={
           showReminder
-            ? { x: [-4, 4, -4, 4, 0], rotate: [-0.5, 0.5, -0.5, 0] }
-            : { x: 0, rotate: 0 }
+            ? {
+                x: [-12, 12, -12, 12, 0],
+                backgroundColor: ["#ffffff", "#fecaca", "#ffffff"],
+              }
+            : { x: 0 }
         }
         transition={{ duration: 0.4 }}
-        className="bg-white/40 backdrop-blur-3xl p-8 md:p-12 rounded-[3.5rem] shadow-[0_32px_64px_rgba(244,63,94,0.2)] border border-white/60 text-center w-full max-w-[420px] relative z-10"
+        className="bg-white/40 backdrop-blur-3xl p-8 md:p-12 rounded-[3.5rem] shadow-[0_32px_64px_rgba(244,63,94,0.2)] border border-white/60 text-center w-full max-w-[420px] relative z-10 overflow-hidden"
       >
         <div className="relative">
           <AnimatePresence mode="wait">
@@ -129,8 +134,12 @@ const QuestionCard = ({ onAccept }) => {
               {isProcessing ? (
                 <div className="flex items-center justify-center gap-3">
                   <div className="w-4 h-4 border-2 border-rose-400 border-t-transparent rounded-full animate-spin" />
-                  <span className="text-sm uppercase tracking-widest">
-                    Verifying...
+                  <span className="text-sm uppercase tracking-widest font-black">
+                    {noCount < 1
+                      ? "Verifying..."
+                      : noCount < 2
+                        ? "RUDE! WAIT..."
+                        : "DON'T YOU DARE..."}
                   </span>
                 </div>
               ) : (
